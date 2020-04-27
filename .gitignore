@@ -1,0 +1,11 @@
+secrets.yaml
+*.log
+*.xml
+*.db
+*.sqlite
+.storage/
+OZW_Log.txt
+harmony_14652778.conf
+harmony_14652778.conf
+known_devices.yaml
+.abhi.chandra@gmail.com.august.conf

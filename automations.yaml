@@ -1,0 +1,74 @@
+- id: '1587438586555'
+  alias: Turn off Projector Plug
+  description: Turn Projector Plug on or off based on Harmony activity
+  trigger:
+  - entity_id: remote.harmony_basement
+    platform: state
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "PowerOff"
+      }}'
+  action:
+  - delay: 00:01:00
+  - entity_id: switch.projectorplug
+    service: switch.turn_off
+  - data:
+      command:
+      - DirectionUp
+      delay_secs: 0.6
+      device: Elite Screens Home Appliance
+    entity_id: remote.harmony_basement
+    service: remote.send_command
+  - data:
+      command:
+      - PowerOff
+      device: Optoma Projector
+    entity_id: remote.harmony_basement
+    service: remote.send_command
+- id: '1587438586556'
+  alias: Turn on Projector Plug
+  description: ''
+  trigger:
+  - entity_id: remote.harmony_basement
+    platform: state
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Home Theater"
+      }}'
+  action:
+  - entity_id: switch.projectorplug
+    service: switch.turn_on
+  - data:
+      command:
+      - DirectionDown
+      delay_secs: 0.6
+      device: Elite Screens Home Appliance
+    entity_id: remote.harmony_basement
+    service: remote.send_command
+- id: '1587438586557'
+  alias: Set theme at startup
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    service: frontend.set_theme
+    data:
+      name: Dark & Green (Theme Name)
+- id: '1587438586558'
+  alias: Perform Auto Backup
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  action:
+  - service: auto_backup.snapshot_partial
+    data_template:
+      name: 'AutoBackup: {{ now().strftime(''%a, %-I:%M %p (%d/%m/%Y)'') }}'
+      addons:
+      - core_mariadb
+      - InfluxDB.
+      folders:
+      - homeassistant
+      - Share
+      - ssl
+      - Local add-ons
+      keep_days: 2

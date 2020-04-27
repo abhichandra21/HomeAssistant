@@ -1,0 +1,13 @@
+- platform: group
+  name: Basement
+  entities:
+    - light.basement_den
+    - light.basement_sitting_area_main_lights
+    - light.basement_stairs_main_lights
+    - light.basement_work_area_main_lights
+  
+
+- platform: group
+  name: Living Room
+  entities:
+    - light.living_room_1

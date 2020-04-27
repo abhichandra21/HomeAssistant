@@ -1,0 +1,117 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+http:
+  base_url: https://abhichandra.duckdns.org
+  use_x_forwarded_for: true
+  trusted_proxies: 127.0.0.1
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+light: !include lights.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+frontend:
+  themes: !include themes.yaml
+
+
+lutron_caseta:
+  host: 192.168.1.61
+  keyfile: /ssl/lutron/caseta.key
+  certfile: /ssl/lutron/caseta.crt
+  ca_certs: /ssl/lutron/caseta-bridge.crt
+  
+tuya:
+  username: "2622788477"
+  password: !secret tuya_password
+  country_code: "1"
+
+media_player:
+  - platform: androidtv
+    host: 192.168.1.10
+    name: "NVidia Shield"
+    adb_server_ip: 127.0.0.1
+
+# Complete configuration.yaml entry
+plex:
+  host: 192.168.1.101
+  port: 32400
+  token: !secret plex_token
+  ssl: false
+  verify_ssl: false
+  media_player:
+    use_episode_art: true
+    ignore_new_shared_users: false
+
+tplink:
+  discovery: true
+
+smartthinq_sensors:
+  token: !secret plex_token
+  region: US
+  language: US
+
+eufy:
+  username: abhi.chandra@gmail.com
+  password: !secret eufy_password
+
+auto_backup:
+  auto_purge: true
+
+# Example configuration.yaml entry
+sensor:
+  - platform: netdata
+    host: '192.168.1.9'
+    port: '19999'
+    name: Frodo
+    resources:
+      system_load:
+        data_group: system.load
+        element: load15
+      core0_freq:
+        data_group: 'cpu.cpufreq'
+        element: 'cpu0'
+        icon: mdi:chip
+
+speedtestdotnet:
+  scan_interval:
+    minutes: 30
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
+influxdb:
+  host: localhost
+  port: 8086
+  database: home_assistant
+  username: homeassistant
+  password: !secret influxdb_password
+  max_retries: 3
+  default_measurement: state
+  
+badnest:
+  user_id: 5593655
+  access_token: !secret nest_secret
+  region: us
+  #climate:
+  #- platform: badnest
+  #  scan_interval: 10
+  #camera:
+  #- platform: badnest
+  sensor:
+    - platform: badnest
+
+glances:
+- host: 127.0.0.1
+
+vacuum:
+  - platform: xiaomi_miio
+    host: 192.168.1.26
+    token: !secret xiaomi_token
+
+discovery:
